@@ -234,7 +234,7 @@ class PebbleGraph(DiGraph):
 		distinguished by there edge label."""
 		for i in range(len(path)-1):
 			self.graph.reverse_edge(path[i+1],path[i])
-			self.colour_vertex[path[i+1]+=self.graph.edge_label(path[i],path[i+1])
+			self.colour_vertex[path[i+1]]+=[self.graph.edge_label(path[i],path[i+1])]
 			if(self.graph.edge_label(path[i],path[i+1]) in self.colour_vertex[path[i]]):
 				self.colour_vertex[path[i]].remove(self.graph.edge_label(path[i],path[i+1]))
 			else:
@@ -308,15 +308,15 @@ class PebbleGraph(DiGraph):
 		else:
 			if(edge_color.edge_label(path[v],path[v-1]) in color_array[path[v-1]]):
 				canon_path.update({path[v]:(path[v],path[v-1])})
-				color_array[v]+=(edge_color.edge_label(path[v],path[v-1]))
+				color_array[v]+=[edge_color.edge_label(path[v],path[v-1])]
 				return self.canon(color_array,edge_color,path,v+1,canon_path)
 			else:
 				P=edge_color.all_paths(path[v],path[v-1])
 				M=self.monochrom1(color_array[path[v-1]],P,edge_color)
 				if(M==False):
 					canon_path.update({path[v]:(path[v],path[v-1])})
-					color_array[v]+=(edge_color.edge_label(path[v],path[v-1]))
-					return True
+					color_array[v]+=[edge_color.edge_label(path[v],path[v-1])]
+					return self.canon(color_array,edge_color,path,v+1,canon_path)
 				M.reverse()
 				return self.canon(color_array,edge_color,M,0,canon_path)
 
